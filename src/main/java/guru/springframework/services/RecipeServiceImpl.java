@@ -8,7 +8,9 @@ import guru.springframework.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import javax.validation.constraints.AssertFalse;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -60,4 +62,9 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeToRecipeCommand.convert(savedRecipe);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Assert.notNull(id, "ID should not be null");
+        recipeRepository.deleteById(id);
+    }
 }
