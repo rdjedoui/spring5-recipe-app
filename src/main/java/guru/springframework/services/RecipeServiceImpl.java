@@ -31,17 +31,23 @@ public class RecipeServiceImpl implements RecipeService {
     public Set<Recipe> getRecipes() {
         log.debug("I'm in the service");
         Set<Recipe> recipes = new HashSet<>();
-        // recipeRepository.findAll() .iterator().forEachRemaining(recipes::add);
+        //recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
         recipeRepository.findAll().forEach(recipes::add);
         return recipes;
     }
 
-    public Recipe geRecipeById(Long id){
+    public Recipe findById(Long id){
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
         if(!recipeOptional.isPresent())
             throw new RuntimeException("Recipe Not Found");
 
         return recipeOptional.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 
     @Override
